@@ -20,7 +20,7 @@ const NumbleProvider = ({ children }: Props) => {
   return (
     <>
       <Global styles={GlobalStyle} />
-      <Provider theme={theme}>{children}</Provider>;
+      <Provider theme={theme}>{children}</Provider>
     </>
   );
 };
