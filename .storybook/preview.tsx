@@ -16,7 +16,16 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <NumbleProvider>
-        <Story />
+        <div
+          style={{
+            padding: '20px',
+            backgroundColor: 'black',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <Story />
+        </div>
       </NumbleProvider>
     ),
   ],

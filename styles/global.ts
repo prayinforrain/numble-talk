@@ -9,6 +9,10 @@ const GlobalStyle = css`
     font-style: normal;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   html,
   body,
   div,
