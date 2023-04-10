@@ -1,7 +1,8 @@
-import { ThemeProvider as Provider } from '@emotion/react';
+import { Global, ThemeProvider as Provider } from '@emotion/react';
 import { ReactNode } from 'react';
 
 import { COLOR } from '@/constants/color';
+import GlobalStyle from '@/styles/global';
 
 interface Props {
   children?: ReactNode;
@@ -16,7 +17,12 @@ const theme: Theme = {
 } as const;
 
 const NumbleProvider = ({ children }: Props) => {
-  return <Provider theme={theme}>{children}</Provider>;
+  return (
+    <>
+      <Global styles={GlobalStyle} />
+      <Provider theme={theme}>{children}</Provider>;
+    </>
+  );
 };
 
 export default NumbleProvider;
