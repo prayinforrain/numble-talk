@@ -1,12 +1,13 @@
-import { COLOR } from '@/constants/color';
 import styled from '@emotion/styled';
 import {
   CSSProperties,
-  InputHTMLAttributes,
   forwardRef,
-  Ref,
+  InputHTMLAttributes,
   ReactElement,
+  Ref,
 } from 'react';
+
+import { COLOR } from '@/constants/color';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   textAlign?: CSSProperties['textAlign'];

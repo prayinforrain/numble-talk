@@ -1,15 +1,16 @@
+import styled from '@emotion/styled';
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+
+import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import { COLOR } from '@/constants/color';
-import { useState } from 'react';
-import Button from '@/components/common/Button';
-import styled from '@emotion/styled';
 
 const meta: Meta<typeof Modal> = {
   title: 'Example/Modal',
   component: Modal,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/7.0/react/writing-docs/docs-page
-  //   tags: ['autodocs'],
+  tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/7.0/react/configure/story-layout
     layout: 'fullscreen',

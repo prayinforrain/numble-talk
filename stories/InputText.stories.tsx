@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import InputText from '@/components/common/InputText';
 import { ChangeEvent, useEffect, useState } from 'react';
-import Button from '@/components/common/Button';
 import { BsSend } from 'react-icons/bs';
+
+import Button from '@/components/common/Button';
+import InputText from '@/components/common/InputText';
 import { COLOR } from '@/constants/color';
 
 const meta: Meta<typeof InputText> = {

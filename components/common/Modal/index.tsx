@@ -1,6 +1,7 @@
-import { COLOR } from '@/constants/color';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
+
+import { COLOR } from '@/constants/color';
 
 interface Props {
   isShown: boolean;

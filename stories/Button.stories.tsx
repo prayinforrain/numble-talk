@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Button from '@/components/common/Button';
 import { BsSend } from 'react-icons/bs';
+
+import Button from '@/components/common/Button';
 import { COLOR } from '@/constants/color';
 
 const meta: Meta<typeof Button> = {

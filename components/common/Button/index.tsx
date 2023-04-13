@@ -1,8 +1,8 @@
+import styled from '@emotion/styled';
 import { ButtonHTMLAttributes, CSSProperties } from 'react';
+import { IconType } from 'react-icons';
 
 import { COLOR } from '@/constants/color';
-import styled from '@emotion/styled';
-import { IconType } from 'react-icons';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
