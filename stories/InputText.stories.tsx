@@ -27,6 +27,15 @@ export const Default: Story = {
   render: (args) => <InputText {...args} />,
 };
 
+export const WithLabel: Story = {
+  args: {
+    placeholder: '입력해주세요.',
+    width: '250px',
+    label: '라벨입니다',
+  },
+  render: (args) => <InputText {...args} />,
+};
+
 export const AlignRight: Story = {
   args: {
     placeholder: '입력해주세요.',
