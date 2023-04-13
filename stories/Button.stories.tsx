@@ -5,7 +5,7 @@ import Button from '@/components/common/Button';
 import { COLOR } from '@/constants/color';
 
 const meta: Meta<typeof Button> = {
-  title: 'Example/Button',
+  title: 'Components/Button',
   component: Button,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/7.0/react/writing-docs/docs-page
   tags: ['autodocs'],

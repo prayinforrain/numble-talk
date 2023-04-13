@@ -7,7 +7,7 @@ import Modal from '@/components/common/Modal';
 import { COLOR } from '@/constants/color';
 
 const meta: Meta<typeof Modal> = {
-  title: 'Example/Modal',
+  title: 'Components/Modal',
   component: Modal,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/7.0/react/writing-docs/docs-page
   tags: ['autodocs'],

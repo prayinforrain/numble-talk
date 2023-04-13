@@ -7,7 +7,7 @@ import InputText from '@/components/common/InputText';
 import { COLOR } from '@/constants/color';
 
 const meta: Meta<typeof InputText> = {
-  title: 'Example/InputText',
+  title: 'Components/InputText',
   component: InputText,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/7.0/react/writing-docs/docs-page
   tags: ['autodocs'],
