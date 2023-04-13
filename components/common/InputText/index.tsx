@@ -59,8 +59,9 @@ const InputWrapper = styled.label<WrapperStyleProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  background-color: ${COLOR.black};
 
-  border: 1px solid ${COLOR.gray2};
+  border: 1px solid ${COLOR.gray3};
   border-radius: 5px;
 
   &:focus-within {
