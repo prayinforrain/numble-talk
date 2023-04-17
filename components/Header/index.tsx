@@ -43,6 +43,7 @@ const Wrapper = styled.div`
   padding: 20px 20px;
   position: fixed;
   top: 0;
+  border-bottom: 2px solid ${COLOR.gray3};
 `;
 
 const HeaderLeft = styled.div``;

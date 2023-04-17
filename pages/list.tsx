@@ -13,6 +13,11 @@ const TEST_DATA: RoomInfo[] = [
     name: '방',
     people: 5,
   },
+  {
+    id: 2,
+    name: '다른 방',
+    people: 2,
+  },
 ];
 
 export default function List() {
@@ -24,12 +29,13 @@ export default function List() {
     people: 0,
   });
   const callModal = (id: number) => {
-    console.log(id);
+    const data = rooms.find((r) => r.id === id);
+    if (!data) return;
+    setModalData(data);
     setShowNewRoomModal(true);
   };
 
   useEffect(() => {
-    console.log('dd');
     setRooms(TEST_DATA);
   }, []);
 
@@ -84,7 +90,6 @@ const Content = styled.div`
 const HeaderPadding = styled.div`
   width: 100%;
   height: 70px;
-  border-bottom: 2px solid ${COLOR.gray3};
 `;
 
 const NoRoom = styled.div`

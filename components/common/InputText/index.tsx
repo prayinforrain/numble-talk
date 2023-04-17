@@ -68,6 +68,7 @@ const InputWrapper = styled.label<WrapperStyleProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 0 0.5rem;
 
   border: 1px solid ${COLOR.gray3};
   border-radius: 5px;
@@ -77,7 +78,7 @@ const InputWrapper = styled.label<WrapperStyleProps>`
   }
 
   & > input {
-    margin: 0.7em 0.5em;
+    margin: 1em 0;
     flex: 1;
     border: none;
     outline: none;
@@ -87,7 +88,7 @@ const InputWrapper = styled.label<WrapperStyleProps>`
     text-align: ${({ textAlign }) => textAlign};
 
     &::placeholder {
-      color: ${COLOR.gray2};
+      color: ${COLOR.gray3};
     }
 
     &:focus {

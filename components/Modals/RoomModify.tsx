@@ -24,7 +24,6 @@ const RoomModify = ({
 }: Props) => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
-    console.log(roomData);
     setRoomData({
       ...roomData,
       [target.name]: target.value,
@@ -61,7 +60,9 @@ const RoomModify = ({
             textAlign="right"
             value={roomData.people}
             onChange={onChange}
+            type="number"
             name="people"
+            maxLength={1}
           />
         </FormContainer>
         <ButtonContainer>

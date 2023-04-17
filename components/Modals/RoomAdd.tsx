@@ -34,7 +34,7 @@ const RoomAdd = ({ showNewRoomModal, setShowNewRoomModal }: Props) => {
       <ModalWrapper>
         <FormContainer>
           <InputText label="방 이름" textAlign="right" />
-          <InputText label="방 인원" textAlign="right" />
+          <InputText label="방 인원" textAlign="right" type="number" />
         </FormContainer>
         <ButtonContainer>
           <Button text="생성" width="100%" padding="0.3rem 0.8rem" />
