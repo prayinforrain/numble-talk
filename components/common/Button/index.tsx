@@ -70,6 +70,7 @@ const ButtonStyle = styled.button<StyleProps>`
   border-radius: 5px;
   color: ${({ textColor }) => textColor};
   font-size: ${({ fontSize }) => fontSize};
+  white-space: nowrap;
 
   ${({ variant }) =>
     variant === 'text' &&
