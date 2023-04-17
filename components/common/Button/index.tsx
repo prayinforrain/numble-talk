@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ButtonHTMLAttributes, CSSProperties } from 'react';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 
 import { COLOR } from '@/constants/color';
 
@@ -70,6 +70,7 @@ const ButtonStyle = styled.button<StyleProps>`
   border-radius: 5px;
   color: ${({ textColor }) => textColor};
   font-size: ${({ fontSize }) => fontSize};
+  white-space: nowrap;
 
   ${({ variant }) =>
     variant === 'text' &&
