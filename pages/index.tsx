@@ -1,21 +1,29 @@
-import Header from '@/components/Header';
+import styled from '@emotion/styled';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
 import Button from '@/components/common/Button';
 import InputText from '@/components/common/InputText';
 import { COLOR } from '@/constants/color';
-import styled from '@emotion/styled';
 import logo from '@/public/numble_icon.svg';
-import Image from 'next/image';
 
 export default function Home() {
+  const router = useRouter();
+
+  const doLogin = () => {
+    // 검증
+
+    router.push('/list');
+  };
+
   return (
     <Container>
-      <Header />
       <Content>
         <Image alt="service logo" src={logo} width={80} />
         <InputText label="API KEY" />
       </Content>
       <Footer>
-        <Button text="Login" width="100%" padding="10px" />
+        <Button text="Login" width="100%" padding="10px" onClick={doLogin} />
         <Button
           variant="text"
           text="KEY 발급받는 방법"

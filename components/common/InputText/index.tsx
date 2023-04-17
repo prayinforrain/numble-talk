@@ -33,6 +33,8 @@ const InputText = forwardRef(
   },
 );
 
+InputText.displayName = 'InputText';
+
 interface WidthStyleProps {
   width: CSSProperties['width'];
 }
