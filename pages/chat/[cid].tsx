@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-// import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import { BsSend } from 'react-icons/bs';
 
 import ChatBalloon from '@/components/ChatBalloon';
@@ -10,42 +10,58 @@ import Header from '@/components/Header';
 import { COLOR } from '@/constants/color';
 import { Message } from '@/types/message';
 
-const TEST_MESSAGES: Message[] = [
-  {
-    id: 1,
-    author: 0,
-    content: 'ㅎㅇㅎㅇ',
-    createdAt: '2',
-  },
-  {
-    id: 2,
-    author: 2,
-    content: 'ㅎㅇㅎㅇ',
-    createdAt: '2',
-  },
-  {
-    id: 3,
-    author: 1,
-    content: '방가뿡가워용',
-    createdAt: '2',
-  },
-];
-
 const Chat = () => {
-  //   const router = useRouter();
-  //   const { cid } = router.query;
+  const router = useRouter();
+  const { cid } = router.query;
 
+  const [locationState, setLocationState] = useState<number>(0); // 0 시작, 1 유효, 2 오류
   const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState<string>('');
+
   useEffect(() => {
-    setMessages(TEST_MESSAGES);
-  }, []);
+    if (!cid) {
+      setLocationState(2);
+      return;
+    }
+    const localData = localStorage.getItem(`room${cid}`);
+    if (!localData) {
+      setLocationState(2);
+      return;
+    }
+    setMessages(JSON.parse(localData));
+    setLocationState(1);
+  }, [cid]);
+
+  const getNewId = () => {
+    if (!messages.length) return 1;
+    return messages[messages.length - 1].id + 1;
+  };
+
+  const submitChat = (e: KeyboardEvent<HTMLInputElement>) => {
+    const { key } = e;
+    if (key !== 'Enter') return;
+    const msg: Message = {
+      author: 0,
+      content: input,
+      createdAt: Date.now(),
+      id: getNewId(),
+    };
+    setMessages([...messages, msg]);
+    setInput('');
+  };
+
+  useEffect(() => {
+    if (locationState !== 1 || !cid) return;
+    localStorage.setItem(`room${cid}`, JSON.stringify(messages));
+  }, [messages]);
 
   return (
     <Container>
       <Header />
       <HeaderPadding />
       <Content>
-        {messages.length &&
+        {locationState === 0 && <Error>loading..</Error>}
+        {locationState === 1 &&
           messages.map((m) => (
             <ChatBalloon
               key={m.id}
@@ -55,10 +71,23 @@ const Chat = () => {
               createdAt={m.createdAt}
             />
           ))}
+        {locationState === 2 && (
+          <Error>
+            오류가 발생했습니다.
+            <br />
+            주소를 다시 확인해 주세요.
+          </Error>
+        )}
       </Content>
       <ButtonContainer>
         <InputText
           placeholder="입력해주세요."
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+          disabled={locationState !== 1}
+          onKeyDown={submitChat}
           buttonRight={
             <Button
               icon={BsSend}
@@ -104,6 +133,16 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 20px;
   background-color: ${COLOR.black};
+`;
+
+const Error = styled.div`
+  flex: 1;
+  color: ${COLOR.white};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: 1.5rem;
 `;
 
 export default Chat;

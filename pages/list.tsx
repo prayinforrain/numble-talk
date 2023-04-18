@@ -1,43 +1,47 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
+import { atomList } from '@/atoms';
 import Header from '@/components/Header';
 import RoomModify from '@/components/Modals/RoomModify';
 import RoomListItem from '@/components/RoomListItem';
 import { COLOR } from '@/constants/color';
 import { RoomInfo } from '@/types/roomInfo';
 
-const TEST_DATA: RoomInfo[] = [
-  {
-    id: 1,
-    name: '방',
-    people: 5,
-  },
-  {
-    id: 2,
-    name: '다른 방',
-    people: 2,
-  },
-];
-
 export default function List() {
-  const [showNewRoomModal, setShowNewRoomModal] = useState<boolean>(false);
-  const [rooms, setRooms] = useState<RoomInfo[]>([]);
+  const [showModifyRoomModal, setShowModifyRoomModal] =
+    useState<boolean>(false);
+  const [rooms, setRooms] = useRecoilState<RoomInfo[]>(atomList);
   const [modalData, setModalData] = useState<RoomInfo>({
     id: 0,
     name: '',
     people: 0,
   });
+
   const callModal = (id: number) => {
     const data = rooms.find((r) => r.id === id);
     if (!data) return;
     setModalData(data);
-    setShowNewRoomModal(true);
+    setShowModifyRoomModal(true);
   };
 
   useEffect(() => {
-    setRooms(TEST_DATA);
+    fetchList();
   }, []);
+
+  const fetchList = () => {
+    const storageData = localStorage.getItem('list');
+    if (!storageData) {
+      localStorage.setItem('list', '[]');
+      return;
+    }
+    setRooms(JSON.parse(storageData));
+  };
+
+  useEffect(() => {
+    if (showModifyRoomModal) return;
+  }, [modalData]);
 
   return (
     <Container>
@@ -57,14 +61,16 @@ export default function List() {
             ))}
           </>
         ) : (
-          <NoRoom>노룸!</NoRoom>
+          <NoRoom>
+            채팅방이 없습니다.
+            <br /> 상단의 + 버튼을 눌러 새 방을 만들어보세요!
+          </NoRoom>
         )}
       </Content>
       <RoomModify
-        setShowNewRoomModal={setShowNewRoomModal}
-        showNewRoomModal={showNewRoomModal}
+        setShowModifyRoomModal={setShowModifyRoomModal}
+        showModifyRoomModal={showModifyRoomModal}
         roomData={modalData}
-        setRoomData={setModalData}
       />
     </Container>
   );
@@ -97,5 +103,7 @@ const NoRoom = styled.div`
   color: ${COLOR.white};
   display: flex;
   justify-content: center;
-  align-items: center; ;
+  align-items: center;
+  text-align: center;
+  line-height: 1.5rem;
 `;

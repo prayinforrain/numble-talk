@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 import { COLOR } from '@/constants/color';
 import { RoomInfo } from '@/types/roomInfo';
@@ -12,10 +13,13 @@ interface Props extends RoomInfo {
 const RoomListItem = ({ name, id, callModal }: Props) => {
   return (
     <ItemWrapper>
-      <ChatName>{name}</ChatName>
+      <Link href={`/chat/${id}`}>
+        <ChatName>{name}</ChatName>
+      </Link>
       <Button
         text="수정"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           callModal(id);
         }}
       />
@@ -31,6 +35,15 @@ const ItemWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid ${COLOR.gray3};
+
+  & > a {
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+  }
 `;
 
 const ChatName = styled.div`
@@ -38,6 +51,9 @@ const ChatName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 export default RoomListItem;
