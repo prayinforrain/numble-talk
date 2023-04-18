@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { KeyboardEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { BsSend } from 'react-icons/bs';
 
 import ChatBalloon from '@/components/ChatBalloon';
@@ -17,6 +17,7 @@ const Chat = () => {
   const [locationState, setLocationState] = useState<number>(0); // 0 시작, 1 유효, 2 오류
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
+  const chatListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!cid) {
@@ -53,10 +54,13 @@ const Chat = () => {
   useEffect(() => {
     if (locationState !== 1 || !cid) return;
     localStorage.setItem(`room${cid}`, JSON.stringify(messages));
-  }, [messages]);
+
+    if (!chatListRef.current) return;
+    chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+  }, [messages, locationState]);
 
   return (
-    <Container>
+    <Container ref={chatListRef}>
       <Header />
       <HeaderPadding />
       <Content>
@@ -123,7 +127,7 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   flex: 1;
-  padding: 20px;
+  padding: 90px 20px;
   gap: 10px;
 `;
 
@@ -133,6 +137,9 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 20px;
   background-color: ${COLOR.black};
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 `;
 
 const Error = styled.div`

@@ -43,6 +43,7 @@ const Wrapper = styled.div`
   padding: 20px 20px;
   position: fixed;
   top: 0;
+  background-color: ${COLOR.black};
   border-bottom: 2px solid ${COLOR.gray3};
 `;
 
