@@ -9,6 +9,7 @@ import InputText from '@/components/common/InputText';
 import Header from '@/components/Header';
 import { COLOR } from '@/constants/color';
 import { Message } from '@/types/message';
+import { RoomInfo } from '@/types/roomInfo';
 
 const Chat = () => {
   const router = useRouter();
@@ -17,10 +18,11 @@ const Chat = () => {
   const [locationState, setLocationState] = useState<number>(0); // 0 시작, 1 유효, 2 오류
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
+  const [roomName, setRoomName] = useState<string>('');
   const chatListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!cid) {
+    if (typeof cid !== 'string') {
       setLocationState(2);
       return;
     }
@@ -29,6 +31,16 @@ const Chat = () => {
       setLocationState(2);
       return;
     }
+    const roomList = localStorage.getItem('list');
+    if (!roomList) {
+      setLocationState(2);
+      setRoomName('404_NOT_FOUND');
+      return;
+    }
+    const rName = JSON.parse(roomList).find(
+      (r: RoomInfo) => r.id === parseInt(cid),
+    );
+    setRoomName(rName.name);
     setMessages(JSON.parse(localData));
     setLocationState(1);
   }, [cid]);
@@ -61,8 +73,7 @@ const Chat = () => {
 
   return (
     <Container ref={chatListRef}>
-      <Header />
-      <HeaderPadding />
+      <Header roomName={roomName} />
       <Content>
         {locationState === 0 && <Error>loading..</Error>}
         {locationState === 1 &&
@@ -106,11 +117,6 @@ const Chat = () => {
     </Container>
   );
 };
-
-const HeaderPadding = styled.div`
-  width: 100%;
-  height: 70px;
-`;
 
 const Container = styled.div`
   display: flex;
