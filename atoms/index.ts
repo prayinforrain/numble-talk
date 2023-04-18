@@ -7,4 +7,9 @@ const atomList = atom<RoomInfo[]>({
   default: [],
 });
 
-export { atomList };
+const atomApiKey = atom<string>({
+  key: 'API_KEY',
+  default: '',
+});
+
+export { atomApiKey, atomList };
