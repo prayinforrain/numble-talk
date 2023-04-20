@@ -73,6 +73,7 @@ const ProfileImageContainer = styled.div`
 
 const MessageBalloon = styled.div<AuthorProps & CreatedAtProps>`
   width: fit-content;
+  position: relative;
   float: ${({ author }) => (author === 0 ? 'right' : 'left')};
   padding: 1rem;
   border-radius: ${({ author }) =>
@@ -87,6 +88,8 @@ const MessageBalloon = styled.div<AuthorProps & CreatedAtProps>`
     right: 5px;
     font-size: 0.6em;
     opacity: 0.6;
+    white-space: nowrap;
+    overflow-x: hidden;
     content: '${({ createdAt }) =>
       createdAt && new Date(createdAt).toLocaleString('ko-kr')}';
   }
