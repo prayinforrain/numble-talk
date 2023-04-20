@@ -17,7 +17,7 @@ export default function Home() {
   const setKey = useSetRecoilState(atomApiKey);
 
   const doLogin = () => {
-    if (input.length !== 32 || !input.match(/[0-9A-z]+/)) {
+    if (input.length !== 51 || !input.match(/[-0-9A-z]+/)) {
       setError('API 키의 형식이 유효하지 않습니다.');
       return;
     }
