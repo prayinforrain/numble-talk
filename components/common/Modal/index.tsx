@@ -33,12 +33,12 @@ const Dimmed = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: ${COLOR.gray4};
+  background-color: ${COLOR.gray1};
   position: fixed;
   color: ${COLOR.white};
   top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   z-index: 1000;
   border-radius: 5px;
 `;

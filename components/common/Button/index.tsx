@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ButtonHTMLAttributes, CSSProperties } from 'react';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 
 import { COLOR } from '@/constants/color';
 
@@ -41,7 +41,12 @@ const Button = ({
       fontSize={fontSize}
       {...props}
     >
-      {Icon && <Icon color={textColor} size={fontSize} />}
+      {Icon && (
+        <Icon
+          color={props.disabled ? COLOR.gray4 : textColor}
+          size={fontSize}
+        />
+      )}
       {text}
     </ButtonStyle>
   );
@@ -70,27 +75,36 @@ const ButtonStyle = styled.button<StyleProps>`
   border-radius: 5px;
   color: ${({ textColor }) => textColor};
   font-size: ${({ fontSize }) => fontSize};
+  white-space: nowrap;
 
   ${({ variant }) =>
     variant === 'text' &&
     `
   text-decoration: underline;
-  cursor: pointer;
-  &:active {
-    background-color: rgba(0, 0, 0, 0.1);
+  &:not(:disabled) {
+    cursor: pointer;
   }
   `};
   font-weight: bold;
   text-align: center;
 
   @media (hover: hover) {
-    &:hover {
+    &:not(:disabled):hover {
       filter: brightness(1.05);
     }
   }
 
-  &:active {
+  &:not(:disabled):active {
     filter: brightness(0.95);
+    ${({ variant }) =>
+      variant === 'text' && `background-color: rgba(0, 0, 0, 0.1);`}
+  }
+
+  &:disabled {
+    ${({ variant }) =>
+      variant === 'filled' && `background-color: ${COLOR.gray4};`}
+    ${({ variant }) => variant !== 'text' && `border-color: ${COLOR.gray4}`}
+    color: ${COLOR.gray4}
   }
 `;
 

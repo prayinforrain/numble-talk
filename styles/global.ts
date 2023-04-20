@@ -13,6 +13,10 @@ const GlobalStyle = css`
     box-sizing: border-box;
   }
 
+  #__next {
+    height: 100%;
+  }
+
   html,
   body,
   div,

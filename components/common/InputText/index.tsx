@@ -14,53 +14,85 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   buttonRight?: ReactElement;
   width?: CSSProperties['width'];
   label?: string;
+  errorMessage?: string;
 }
 
 const InputText = forwardRef(
   (
-    { textAlign = 'left', width = '100%', buttonRight, label, ...props }: Props,
+    {
+      textAlign = 'left',
+      width = '100%',
+      buttonRight,
+      label,
+      errorMessage,
+      ...props
+    }: Props,
     ref: Ref<HTMLInputElement>,
   ) => {
     return (
-      <>
-        {label && <Label width={width}>{label}</Label>}
-        <InputWrapper textAlign={textAlign} width={width}>
+      <Container width={width}>
+        {label && <Label>{label}</Label>}
+        <InputWrapper textAlign={textAlign}>
           <input type="text" {...props} ref={ref} />
           {buttonRight}
         </InputWrapper>
-      </>
+        {errorMessage && <Error>{errorMessage}</Error>}
+      </Container>
     );
   },
 );
 
-interface LabelStyleProps {
+InputText.displayName = 'InputText';
+
+interface WidthStyleProps {
   width: CSSProperties['width'];
 }
 
-const Label = styled.div<LabelStyleProps>`
+const Container = styled.div<WidthStyleProps>`
   width: ${({ width }) => width};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+`;
+
+const Label = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   color: ${COLOR.white};
   font-size: 0.8em;
   margin-left: 5px;
-  margin-bottom: 6px;
+`;
+
+const Error = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: ${COLOR.error};
+  font-size: 0.8em;
+  margin-left: 5px;
+  position: absolute;
+  bottom: -1.2rem;
 `;
 
 interface WrapperStyleProps {
-  width: CSSProperties['width'];
   textAlign: CSSProperties['textAlign'];
 }
 
 const InputWrapper = styled.label<WrapperStyleProps>`
-  width: ${({ width }) => width};
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 0 0.5rem;
 
-  border: 1px solid ${COLOR.gray2};
+  border: 1px solid ${COLOR.gray3};
   border-radius: 5px;
 
   &:focus-within {
@@ -68,7 +100,7 @@ const InputWrapper = styled.label<WrapperStyleProps>`
   }
 
   & > input {
-    margin: 0.7em 0.5em;
+    margin: 1em 0;
     flex: 1;
     border: none;
     outline: none;
@@ -78,7 +110,7 @@ const InputWrapper = styled.label<WrapperStyleProps>`
     text-align: ${({ textAlign }) => textAlign};
 
     &::placeholder {
-      color: ${COLOR.gray2};
+      color: ${COLOR.gray3};
     }
 
     &:focus {
