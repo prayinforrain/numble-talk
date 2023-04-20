@@ -36,7 +36,14 @@ export default function Home() {
   return (
     <Container>
       <Content>
-        <Image alt="service logo" src={logo} width={80} />
+        <Image
+          alt="service logo"
+          src={logo}
+          width={80}
+          placeholder="blur"
+          blurDataURL="/numble_icon.svg"
+          priority
+        />
         <InputText
           label="API KEY"
           name="key"

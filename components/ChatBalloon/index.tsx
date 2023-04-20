@@ -14,6 +14,7 @@ const ChatBalloon = ({ author, content, createdAt }: Message) => {
             src={getProfile(author)}
             alt="ai profile image"
             fill
+            sizes="3rem"
             style={{ borderRadius: 'inherit' }}
           />
         </ProfileImageContainer>
