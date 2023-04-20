@@ -155,7 +155,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 20px;
   background-color: ${COLOR.black};
-  position: absolute;
+  position: fixed;
   width: 100%;
   bottom: 0;
 `;
