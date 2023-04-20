@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { atomList } from '@/atoms';
+import { atomApiKey, atomList } from '@/atoms';
 import Header from '@/components/Header';
 import RoomModify from '@/components/Modals/RoomModify';
 import RoomListItem from '@/components/RoomListItem';
@@ -18,6 +19,8 @@ export default function List() {
     name: '',
     people: 0,
   });
+  const API_KEY = useRecoilValue(atomApiKey);
+  const router = useRouter();
 
   const callModal = (id: number) => {
     const data = rooms.find((r) => r.id === id);
@@ -27,6 +30,10 @@ export default function List() {
   };
 
   useEffect(() => {
+    if (API_KEY.length !== 51) {
+      router.push('/');
+      return;
+    }
     fetchList();
   }, []);
 

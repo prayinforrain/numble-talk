@@ -14,11 +14,19 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   buttonRight?: ReactElement;
   width?: CSSProperties['width'];
   label?: string;
+  errorMessage?: string;
 }
 
 const InputText = forwardRef(
   (
-    { textAlign = 'left', width = '100%', buttonRight, label, ...props }: Props,
+    {
+      textAlign = 'left',
+      width = '100%',
+      buttonRight,
+      label,
+      errorMessage,
+      ...props
+    }: Props,
     ref: Ref<HTMLInputElement>,
   ) => {
     return (
@@ -28,6 +36,7 @@ const InputText = forwardRef(
           <input type="text" {...props} ref={ref} />
           {buttonRight}
         </InputWrapper>
+        {errorMessage && <Error>{errorMessage}</Error>}
       </Container>
     );
   },
@@ -46,6 +55,7 @@ const Container = styled.div<WidthStyleProps>`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  position: relative;
 `;
 
 const Label = styled.div`
@@ -56,6 +66,18 @@ const Label = styled.div`
   color: ${COLOR.white};
   font-size: 0.8em;
   margin-left: 5px;
+`;
+
+const Error = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: ${COLOR.error};
+  font-size: 0.8em;
+  margin-left: 5px;
+  position: absolute;
+  bottom: -1.2rem;
 `;
 
 interface WrapperStyleProps {

@@ -23,6 +23,10 @@ const RoomAdd = ({ showNewRoomModal, setShowNewRoomModal }: Props) => {
     people: 1,
   });
   const [globalList, setGlobalList] = useRecoilState(atomList);
+  const [errors, setErrors] = useState({
+    name: '',
+    people: '',
+  });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
@@ -38,6 +42,20 @@ const RoomAdd = ({ showNewRoomModal, setShowNewRoomModal }: Props) => {
   };
 
   const onSubmit = () => {
+    if (modalData.people < 2 || modalData.people > 5) {
+      setErrors({
+        ...errors,
+        people: '2명 이상 5명 이하만 가능합니다.',
+      });
+      return;
+    }
+    if (modalData.name.length > 10 || modalData.name.length < 2) {
+      setErrors({
+        ...errors,
+        name: '2~10글자로 지어주세요.',
+      });
+      return;
+    }
     const arr = globalList.slice();
     const id = getNewId();
     arr.push({ ...modalData, id: id });
@@ -49,6 +67,10 @@ const RoomAdd = ({ showNewRoomModal, setShowNewRoomModal }: Props) => {
 
   const close = () => {
     setModalData({ id: 0, name: '', people: 1 });
+    setErrors({
+      name: '',
+      people: '',
+    });
     setShowNewRoomModal(false);
   };
 
@@ -72,6 +94,7 @@ const RoomAdd = ({ showNewRoomModal, setShowNewRoomModal }: Props) => {
             value={modalData.name}
             onChange={onChange}
             name="name"
+            errorMessage={errors.name}
           />
           <InputText
             label="방 인원"
@@ -80,6 +103,7 @@ const RoomAdd = ({ showNewRoomModal, setShowNewRoomModal }: Props) => {
             onChange={onChange}
             type="number"
             name="people"
+            errorMessage={errors.people}
           />
         </FormContainer>
         <ButtonContainer>
@@ -100,7 +124,7 @@ const ModalWrapper = styled.div`
   padding: 10px 30px 30px 30px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 `;
 
 const ModalHeader = styled.div`
@@ -124,7 +148,7 @@ const FormContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
 `;
 
 export default RoomAdd;

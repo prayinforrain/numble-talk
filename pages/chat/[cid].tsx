@@ -1,26 +1,43 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { KeyboardEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { BsSend } from 'react-icons/bs';
+import { useRecoilValue } from 'recoil';
 
-import ChatBalloon from '@/components/ChatBalloon';
+import { atomApiKey } from '@/atoms';
+import ChatBalloon, { PendingBalloon } from '@/components/ChatBalloon';
 import Button from '@/components/common/Button';
 import InputText from '@/components/common/InputText';
 import Header from '@/components/Header';
 import { COLOR } from '@/constants/color';
-import { Message } from '@/types/message';
+import useChat from '@/hooks/useChat';
+import { RoomInfo } from '@/types/roomInfo';
 
 const Chat = () => {
   const router = useRouter();
   const { cid } = router.query;
+  const API_KEY = useRecoilValue(atomApiKey);
 
   const [locationState, setLocationState] = useState<number>(0); // 0 시작, 1 유효, 2 오류
-  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
 
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>({
+    id: -1,
+    name: '',
+    people: 0,
+  });
+  const { isPending, messages, setMessages, submitChat } = useChat(
+    roomInfo.people,
+  );
+  const chatListRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (!cid) {
+    if (typeof cid !== 'string') {
       setLocationState(2);
+      return;
+    }
+    if (API_KEY.length !== 51) {
+      router.push('/');
       return;
     }
     const localData = localStorage.getItem(`room${cid}`);
@@ -28,37 +45,38 @@ const Chat = () => {
       setLocationState(2);
       return;
     }
+    const roomList = localStorage.getItem('list');
+    if (!roomList) {
+      setLocationState(2);
+      setRoomInfo({ ...roomInfo, name: '404_NOT_FOUND' });
+      return;
+    }
+    const room = JSON.parse(roomList).find(
+      (r: RoomInfo) => r.id === parseInt(cid),
+    );
+    setRoomInfo(room);
     setMessages(JSON.parse(localData));
     setLocationState(1);
   }, [cid]);
 
-  const getNewId = () => {
-    if (!messages.length) return 1;
-    return messages[messages.length - 1].id + 1;
-  };
-
-  const submitChat = (e: KeyboardEvent<HTMLInputElement>) => {
+  const onKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
     const { key } = e;
     if (key !== 'Enter') return;
-    const msg: Message = {
-      author: 0,
-      content: input,
-      createdAt: Date.now(),
-      id: getNewId(),
-    };
-    setMessages([...messages, msg]);
+    submitChat(input);
     setInput('');
   };
 
   useEffect(() => {
     if (locationState !== 1 || !cid) return;
     localStorage.setItem(`room${cid}`, JSON.stringify(messages));
-  }, [messages]);
+
+    if (!chatListRef.current) return;
+    chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+  }, [messages, locationState, isPending]);
 
   return (
-    <Container>
-      <Header />
-      <HeaderPadding />
+    <Container ref={chatListRef}>
+      <Header roomName={roomInfo?.name} />
       <Content>
         {locationState === 0 && <Error>loading..</Error>}
         {locationState === 1 &&
@@ -78,6 +96,7 @@ const Chat = () => {
             주소를 다시 확인해 주세요.
           </Error>
         )}
+        {isPending && <PendingBalloon />}
       </Content>
       <ButtonContainer>
         <InputText
@@ -86,8 +105,7 @@ const Chat = () => {
           onChange={(e) => {
             setInput(e.target.value);
           }}
-          disabled={locationState !== 1}
-          onKeyDown={submitChat}
+          onKeyDown={onKeydown}
           buttonRight={
             <Button
               icon={BsSend}
@@ -95,6 +113,11 @@ const Chat = () => {
               textColor={COLOR.primary}
               padding="0.2rem 0.2rem"
               fontSize="1.2rem"
+              onClick={() => {
+                submitChat(input);
+                setInput('');
+              }}
+              disabled={locationState !== 1 && !isPending}
             />
           }
         />
@@ -102,11 +125,6 @@ const Chat = () => {
     </Container>
   );
 };
-
-const HeaderPadding = styled.div`
-  width: 100%;
-  height: 70px;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -123,7 +141,7 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   flex: 1;
-  padding: 20px;
+  padding: 90px 20px;
   gap: 10px;
 `;
 
@@ -133,6 +151,9 @@ const ButtonContainer = styled.div`
   align-items: center;
   padding: 20px;
   background-color: ${COLOR.black};
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 `;
 
 const Error = styled.div`

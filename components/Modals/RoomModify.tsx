@@ -3,7 +3,7 @@ import {
   ChangeEvent,
   Dispatch,
   SetStateAction,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from 'react';
 import { BsXLg } from 'react-icons/bs';
@@ -34,6 +34,11 @@ const RoomModify = ({
     people: 1,
   });
   const [globalList, setGlobalList] = useRecoilState(atomList);
+  const [errors, setErrors] = useState({
+    name: '',
+    people: '',
+  });
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     setModalData({
@@ -42,11 +47,25 @@ const RoomModify = ({
     });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setModalData(roomData);
   }, [roomData]);
 
   const onSubmit = () => {
+    if (modalData.people < 2 || modalData.people > 5) {
+      setErrors({
+        ...errors,
+        people: '2명 이상 5명 이하만 가능합니다.',
+      });
+      return;
+    }
+    if (modalData.name.length > 10 || modalData.name.length < 2) {
+      setErrors({
+        ...errors,
+        name: '2~10글자로 지어주세요.',
+      });
+      return;
+    }
     const toChange = globalList.findIndex((r) => r.id === roomData.id);
     const arr = globalList.slice();
     arr[toChange] = modalData;
@@ -64,7 +83,6 @@ const RoomModify = ({
   };
 
   const close = () => {
-    setModalData({ id: 0, name: '', people: 1 });
     setShowModifyRoomModal(false);
   };
 
@@ -88,6 +106,7 @@ const RoomModify = ({
             value={modalData.name}
             onChange={onChange}
             name="name"
+            errorMessage={errors.name}
           />
           <InputText
             label="방 인원"
@@ -96,6 +115,7 @@ const RoomModify = ({
             onChange={onChange}
             type="number"
             name="people"
+            errorMessage={errors.people}
           />
         </FormContainer>
         <ButtonContainer>
