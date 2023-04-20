@@ -63,37 +63,42 @@ const useChat = (people: number) => {
     };
     doChat(input).then((r) => {
       if (
+        r.status !== 200 ||
         r.data.choices[0].finish_reason !== 'stop' ||
         !r.data.choices[0].message
       ) {
-        const msg: Message = {
-          author: 1,
-          content: '오류가 발생했습니다. 다시 한 번 시도해 주세요.',
-          createdAt: Date.now(),
-          id: getNewId(),
-        };
-        setMessages((prev) => [...prev, msg]);
-        setIsPending(false);
+        HandleError();
         return;
       }
       const msgs = r.data.choices[0].message.content
         .split(/\n+(?=[1-4])/)
-        .map((c) => {
-          const sp = c.split(': ');
+        .map((c, idx) => {
+          const sp = c.split(/:[ \n]/);
           const author = parseInt(sp[0]);
           const content = sp.slice(1).join(': ');
           const msg: Message = {
             author: author,
             content: content,
             createdAt: Date.now(),
-            id: getNewId() + author,
+            id: getNewId() + idx + 1,
           };
           return msg;
         });
       setMessages((prev) => [...prev, ...msgs]);
       setIsPending(false);
-    });
+    }, HandleError);
     setMessages([...messages, msg]);
+  };
+
+  const HandleError = () => {
+    const msg: Message = {
+      author: 1,
+      content: '오류가 발생했습니다. 다시 한 번 시도해 주세요.',
+      createdAt: Date.now(),
+      id: getNewId(),
+    };
+    setMessages((prev) => [...prev, msg]);
+    setIsPending(false);
   };
 
   return { messages, setMessages, submitChat, isPending };
