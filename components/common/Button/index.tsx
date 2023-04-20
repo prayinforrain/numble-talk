@@ -76,22 +76,30 @@ const ButtonStyle = styled.button<StyleProps>`
     variant === 'text' &&
     `
   text-decoration: underline;
-  cursor: pointer;
-  &:active {
-    background-color: rgba(0, 0, 0, 0.1);
+  &:not(:disabled) {
+    cursor: pointer;
   }
   `};
   font-weight: bold;
   text-align: center;
 
   @media (hover: hover) {
-    &:hover {
+    &:not(:disabled):hover {
       filter: brightness(1.05);
     }
   }
 
-  &:active {
+  &:not(:disabled):active {
     filter: brightness(0.95);
+    ${({ variant }) =>
+      variant === 'text' && `background-color: rgba(0, 0, 0, 0.1);`}
+  }
+
+  &:disabled {
+    ${({ variant }) =>
+      variant === 'filled' && `background-color: ${COLOR.gray4};`}
+    ${({ variant }) => variant !== 'text' && `border-color: ${COLOR.gray4};`}
+    color: ${COLOR.gray4}
   }
 `;
 
