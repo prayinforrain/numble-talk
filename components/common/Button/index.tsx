@@ -41,7 +41,12 @@ const Button = ({
       fontSize={fontSize}
       {...props}
     >
-      {Icon && <Icon color={textColor} size={fontSize} />}
+      {Icon && (
+        <Icon
+          color={props.disabled ? COLOR.gray4 : textColor}
+          size={fontSize}
+        />
+      )}
       {text}
     </ButtonStyle>
   );
@@ -98,7 +103,7 @@ const ButtonStyle = styled.button<StyleProps>`
   &:disabled {
     ${({ variant }) =>
       variant === 'filled' && `background-color: ${COLOR.gray4};`}
-    ${({ variant }) => variant !== 'text' && `border-color: ${COLOR.gray4};`}
+    ${({ variant }) => variant !== 'text' && `border-color: ${COLOR.gray4}`}
     color: ${COLOR.gray4}
   }
 `;
