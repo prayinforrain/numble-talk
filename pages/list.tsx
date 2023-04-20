@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -52,6 +53,9 @@ export default function List() {
 
   return (
     <Container>
+      <Head>
+        <title>내 채팅 - Numble Talk</title>
+      </Head>
       <Header />
       <Content>
         {rooms.length ? (

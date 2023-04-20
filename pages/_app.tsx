@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
 import NumbleProvider from '@/components/common/Theme';
 import { COLOR } from '@/constants/color';
@@ -7,6 +8,12 @@ import { COLOR } from '@/constants/color';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no"
+        />
+      </Head>
       <NumbleProvider>
         <Wrapper>
           <Component {...pageProps} />

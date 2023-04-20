@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { BsSend } from 'react-icons/bs';
@@ -76,6 +77,9 @@ const Chat = () => {
 
   return (
     <Container ref={chatListRef}>
+      <Head>
+        <title>{roomInfo?.name} - Numble Talk</title>
+      </Head>
       <Header roomName={roomInfo?.name} />
       <Content>
         {locationState === 0 && <Error>loading..</Error>}
