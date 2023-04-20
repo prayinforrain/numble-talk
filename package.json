@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=bf8969e0c733"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -40,6 +41,7 @@
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
+    "chromatic": "^6.17.3",
     "eslint": "^8.37.0",
     "eslint-config-next": "13.2.4",
     "eslint-config-prettier": "^8.8.0",
@@ -58,5 +60,7 @@
     "@types/react@18.0.33": {
       "unplugged": true
     }
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "numble-talk@0.1.0"
 }
