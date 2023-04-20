@@ -5,7 +5,7 @@ import { COLOR } from '@/constants/color';
 import getProfile from '@/constants/profile';
 import { Message } from '@/types/message';
 
-const ChatBalloon = ({ author, content }: Message) => {
+const ChatBalloon = ({ author, content, createdAt }: Message) => {
   return (
     <MessageContainer author={author}>
       {author !== 0 && (
@@ -18,7 +18,9 @@ const ChatBalloon = ({ author, content }: Message) => {
           />
         </ProfileImageContainer>
       )}
-      <MessageBalloon author={author}>{content}</MessageBalloon>
+      <MessageBalloon author={author} createdAt={createdAt}>
+        {content}
+      </MessageBalloon>
     </MessageContainer>
   );
 };
@@ -44,6 +46,10 @@ interface AuthorProps {
   author: number;
 }
 
+interface CreatedAtProps {
+  createdAt?: number;
+}
+
 const MessageContainer = styled.div<AuthorProps>`
   width: 100%;
   position: relative;
@@ -65,7 +71,7 @@ const ProfileImageContainer = styled.div`
   background-color: ${COLOR.white};
 `;
 
-const MessageBalloon = styled.div<AuthorProps>`
+const MessageBalloon = styled.div<AuthorProps & CreatedAtProps>`
   width: fit-content;
   float: ${({ author }) => (author === 0 ? 'right' : 'left')};
   padding: 1rem;
@@ -74,6 +80,16 @@ const MessageBalloon = styled.div<AuthorProps>`
   background-color: ${({ author }) =>
     author === 0 ? COLOR.primary : COLOR.gray3};
   color: ${({ author }) => (author === 0 ? COLOR.black : COLOR.white)};
+
+  &::after {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    font-size: 0.6em;
+    opacity: 0.6;
+    content: '${({ createdAt }) =>
+      createdAt && new Date(createdAt).toLocaleString('ko-kr')}';
+  }
 `;
 
 const Loading = styled.div`
@@ -90,19 +106,19 @@ const Loading = styled.div`
     background: #fff;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
-  & div:nth-child(1) {
+  & div:nth-of-type(1) {
     left: 4px;
     animation: lds-ellipsis1 0.6s infinite;
   }
-  & div:nth-child(2) {
+  & div:nth-of-type(2) {
     left: 4px;
     animation: lds-ellipsis2 0.6s infinite;
   }
-  & div:nth-child(3) {
+  & div:nth-of-type(3) {
     left: 16px;
     animation: lds-ellipsis2 0.6s infinite;
   }
-  & div:nth-child(4) {
+  & div:nth-of-type(4) {
     left: 28px;
     animation: lds-ellipsis3 0.6s infinite;
   }
