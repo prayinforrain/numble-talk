@@ -69,6 +69,7 @@ const Wrapper = styled.div`
   top: 0;
   background-color: ${COLOR.black};
   border-bottom: 2px solid ${COLOR.gray3};
+  z-index: 1;
 `;
 
 const HeaderLeft = styled.div`
