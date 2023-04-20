@@ -7,14 +7,15 @@ import { useSetRecoilState } from 'recoil';
 import { atomApiKey } from '@/atoms';
 import Button from '@/components/common/Button';
 import InputText from '@/components/common/InputText';
+import Tutorial from '@/components/Modals/Tutorial';
 import { COLOR } from '@/constants/color';
-import logo from '@/public/numble_icon.svg';
 
 export default function Home() {
   const router = useRouter();
   const [input, setInput] = useState<string>('');
   const [error, setError] = useState<string>('');
   const setKey = useSetRecoilState(atomApiKey);
+  const [showTutorial, setShowTutorial] = useState<boolean>(false);
 
   const doLogin = () => {
     if (input.length !== 51 || !input.match(/[-0-9A-z]+/)) {
@@ -36,14 +37,16 @@ export default function Home() {
   return (
     <Container>
       <Content>
-        <Image
-          alt="service logo"
-          src={logo}
-          width={80}
-          placeholder="blur"
-          blurDataURL="/numble_icon.svg"
-          priority
-        />
+        <LogoBox>
+          <Image
+            alt="service logo"
+            src="/numble_icon.svg"
+            fill
+            placeholder="blur"
+            blurDataURL="/numble_icon.svg"
+            priority
+          />
+        </LogoBox>
         <InputText
           label="API KEY"
           name="key"
@@ -59,6 +62,11 @@ export default function Home() {
           text="KEY 발급받는 방법"
           textColor={COLOR.white}
           fontSize="0.9rem"
+          onClick={() => setShowTutorial(true)}
+        />
+        <Tutorial
+          setShowNewRoomModal={setShowTutorial}
+          showNewRoomModal={showTutorial}
         />
       </Footer>
     </Container>
@@ -72,6 +80,12 @@ const Container = styled.div`
   width: 100%;
   flex: 1;
   max-width: 800px;
+`;
+
+const LogoBox = styled.div`
+  width: 80px;
+  height: 80px;
+  position: relative;
 `;
 
 const Content = styled.div`
