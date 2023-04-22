@@ -83,7 +83,6 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
   flex: 1;
-  max-width: 800px;
 `;
 
 const LogoBox = styled.div`

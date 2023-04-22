@@ -11,6 +11,29 @@ const GlobalStyle = css`
 
   * {
     box-sizing: border-box;
+
+    /*
+    Scrollbar from OnAirCode
+    source: https://onaircode.com/html-css-custom-scrollbar-examples/
+     */
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background: rgba(255, 255, 255, 0.6);
+    }
   }
 
   #__next {
